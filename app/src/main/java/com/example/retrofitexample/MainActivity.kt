@@ -17,6 +17,12 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.io.IOException
+
+
+import com.example.retrofitexample.api.ApiAdapter
+import kotlin.coroutines.coroutineContext
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -36,11 +42,18 @@ class MainActivity : AppCompatActivity() {
         } else {
             println("si se dieron los permisos")
             bt1.setOnClickListener {
-                getPosts(tv1)
+
+                getPosts2(tv1)
             }
         }
+
+
+
+
+
     }
     fun getPosts(tv1:TextView){
+        /*
         var posts2:String = ""
         val retrofit: Retrofit = Retrofit.Builder()
             .baseUrl("http://jsonplaceholder.typicode.com/")
@@ -74,7 +87,25 @@ class MainActivity : AppCompatActivity() {
                 t?.printStackTrace()
             }
         })
+        */
+    }
+
+
+    fun getPosts2(tv1:TextView){
+        try {
+            val service = ApiAdapter.makeApiAdapter()
+            val response = service.getAllPosts()
+            return if (response.isSuccessful) {
+                val result = response.body()
+                println("result: $result")
+            } else {
+                println("sucedio un error al recuperar los posts, getposts2")
+            }
+        } catch (e: Throwable) {
+            println("error en el trycatch al recuperar los posts, getposts2")
+        }
 
     }
+
 
 }
